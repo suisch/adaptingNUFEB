@@ -8,8 +8,8 @@ newton		off
 processors  4 1 1
 comm_modify	vel yes
 
-read_data_bio atom.restart.in 
-read_bio_restart restart.data
+read_data_bio atom.in 
+#read_bio_restart restart.data
 
 group HET type 1
 group EPS type 2
@@ -66,6 +66,18 @@ variable nloops equal 1
 variable diffT equal 1e-4
 variable layer equal -1
 
+#variables used in fix death
+variable deadDia equal 9e-7
+
+
+##############Define IBm Commands from biofilm_het ##############
+
+fix k1 all kinetics 100 25 10 25 v_diffT v_layer niter 5000
+fix kgm all kinetics/growth/monod epsdens 30
+fix g1 all kinetics/diffusion v_tol dcflag 2 
+fix d1 all divide 100 v_EPSdens v_divDia 64564
+fix e1 HET eps_extract 100 v_EPSratio v_EPSdens 53453
+
 ##############Define IBm Computes##############
 
 compute myMass all biomass
@@ -83,5 +95,6 @@ thermo_style    custom step cpu atoms
 thermo		100
 thermo_modify	lost error
 
-
+#from biofilm_het
+run 80000
 
