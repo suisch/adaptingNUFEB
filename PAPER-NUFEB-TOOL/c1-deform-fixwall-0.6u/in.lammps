@@ -66,6 +66,10 @@ variable nloops equal 1
 variable diffT equal 1e-4
 variable layer equal -1
 
+#variables used in fix death   from biofilm_het
+variable deadDia equal 9e-7
+
+
 ##############Define IBm Commands from biofilm_het ##############
 
 fix k1 all kinetics 100 25 10 25 v_diffT v_layer niter 5000
@@ -79,7 +83,7 @@ fix e1 HET eps_extract 100 v_EPSratio v_EPSdens 53453
 compute myMass all biomass
 compute myRough all roughness 
 
-fix k1 all kinetics 100000 25 10 10 v_diffT v_layer niter 1
+#fix k1 all kinetics 100000 25 10 10 v_diffT v_layer niter 1
 fix cfd1 all sedifoam v_bioSteps v_bioDt v_nloops
 
 ##############Simulation Output##############
