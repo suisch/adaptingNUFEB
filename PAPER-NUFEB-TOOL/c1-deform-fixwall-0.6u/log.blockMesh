@@ -1,0 +1,73 @@
+/*---------------------------------------------------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.4.0                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+Build  : 2.4.0-dcea1e13ff76
+Exec   : blockMesh
+Date   : Dec 26 2020
+Time   : 15:01:31
+Host   : "susannevirtualbox"
+PID    : 4071
+Case   : /home/susanne/NUFEB/examples/PAPER-NUFEB-TOOL/c1-deform-fixwall-0.6u
+nProcs : 1
+sigFpe : Enabling floating point exception trapping (FOAM_SIGFPE).
+fileModificationChecking : Monitoring run-time modified files using timeStampMaster
+allowSystemOperations : Allowing user-supplied system call operations
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+Create time
+
+Creating block mesh from
+    "/home/susanne/NUFEB/examples/PAPER-NUFEB-TOOL/c1-deform-fixwall-0.6u/constant/polyMesh/blockMeshDict"
+Creating curved edges
+Creating topology blocks
+Creating topology patches
+
+Creating block mesh topology
+
+Check topology
+
+	Basic statistics
+		Number of internal faces : 0
+		Number of boundary faces : 6
+		Number of defined boundary faces : 6
+		Number of undefined boundary faces : 0
+	Checking patch -> block consistency
+
+Creating block offsets
+Creating merge list .
+
+Creating polyMesh from blockMesh
+Creating patches
+Creating cells
+Creating points with scale 1
+    Block 0 cell size :
+        i : 1e-05 .. 1e-05
+        j : 4e-06 .. 4e-06
+        k : 1.6e-06 .. 1.6e-06
+
+
+Writing polyMesh
+----------------
+Mesh Information
+----------------
+  boundingBox: (0 0 0) (0.0001 4e-05 4e-05)
+  nPoints: 3146
+  nCells: 2500
+  nFaces: 8100
+  nInternalFaces: 6900
+----------------
+Patches
+----------------
+  patch 0 (start: 6900 size: 100) name: bottom
+  patch 1 (start: 7000 size: 100) name: top
+  patch 2 (start: 7100 size: 250) name: left
+  patch 3 (start: 7350 size: 250) name: right
+  patch 4 (start: 7600 size: 250) name: front
+  patch 5 (start: 7850 size: 250) name: back
+
+End
+
