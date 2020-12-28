@@ -53,9 +53,9 @@ neigh_modify	delay 0 one 5000
 ##############Define mechanical processes##############
 ##############Define DEM Variables&Commands##############
 ##contact force##
-#pair_style  gran/hooke/history 1 NULL 1.e6 NULL 0.0 1
+pair_style  gran/hooke/history 1 NULL 1.e6 NULL 0.0 1
 #from tutorial w multi scale time step, and from biofilm_het
-pair_style gran/hooke/history 1.e-4 NULL 1.e-5 NULL 0.0 1
+#pair_style gran/hooke/history 1.e-4 NULL 1.e-5 NULL 0.0 1
 
 pair_coeff  * *
 
@@ -65,19 +65,20 @@ timestep 1e-8
 #however, biofilm_het was timesept 10 !!! and anaerob is 720
 
 #was moving biofilm, instead nve limit
+#the follwoing command produces error if the nve/lmit is ALSO active - this one outcommented, because all other examples rahter have the below nve limit
 #fix 1 moving nve/sphere
 #from biofilm het
 ##constant NVE updates of position and velocity of atoms## in anaerob is 1e-7 instead of 1e-8
-fix 1 all nve/limit 1e-7
+fix 1 all nve/limit 1e-8
 
 #from biofilm_het:
-##viscous force##
+##viscous force## - turning this on leads to a completely differnet flow field
 fix fv all viscous 1e-5
 
 #from biofilm_het:
 ##contact force from domain boundary##
-#fix zw all wall/gran hooke/history 2000 NULL 500.0 NULL 1.5 0 zplane  0.0  1e-04
-#this previous line prodced error on 28
+#fix zw all wall/gran hooke/history 2000 NULL 500 NULL 1.5 0 zplane  0.0  1e-04
+#this previous line prodced error on 28.12.20. it looked as if it had worked at some point, but I dont think it ever worked
 
 #why should I delete them ?
 delete_atoms group deleting
@@ -88,7 +89,7 @@ variable kanc equal 5e+5
 fix zwa all walladh v_kanc zplane  0.0  1e-04
 
 ##EPS adhesive force##
-#variable ke equal 5e+10
+variable ke equal 5e+10
 #fix j1 all epsadh 1 v_ke 1
 
 fix fco all cohesive 1e-16 1 1e-8 1e-6 1
@@ -116,10 +117,10 @@ variable divDia equal 1.36e-6
 
 #variables used in fix kinetics: diffusion timestep; diffusion toleranace value; height of boundary layer##
 #diffT diffusion time step (s) is 1e-4 in anaerbic, with timestep 720, here was 1
-variable diffT equal 1
+variable diffT equal 1e-4
 #the following was -1 in deform but 4e-5 in anaerobic. I want no diffusion-only layer, therefore -1
 variable layer equal -1
-# from biofilm_het:
+# from biofilm_het:  is 1e-7 in anaerobics
 variable tol equal 1e-6
 
 #variables used in fix death: minimum microbe diameter##   from biofilm_het
@@ -132,7 +133,7 @@ variable deadDia equal 9e-7
 
 #from tutorial instead of the line below, but replace the first nbr 1 by 1000000
 # set demflag 0 to run. 1 is to suspend 
-fix k1 all kinetics 1 50 20 20 v_diffT v_layer demflag 0 niter 100
+fix k1 all kinetics 100000 50 20 20 v_diffT v_layer demflag 0 niter 100
 #fix k1 all kinetics 100000 25 10 10 v_diffT v_layer niter 100
 #outcomment the following because set elsewhere ß!
 #fix kgm all kinetics/growth/monod epsdens 30
@@ -180,16 +181,16 @@ thermo_modify	lost error
 #from tutorial
 ##############Define Bio-loop and DEM-subloop##############
 #12000 from anaerobic
-run 1 pre no post no #every 1 
+run 12000 pre no post no #every 1 
 fix_modify k1 demflag 1 
 fix_modify d1 demflag 1 
 #timestep 1e-6
-run 10 pre no post no
+run 10000 pre no post no
 #timestep 600
 fix_modify k1 demflag 0 
 fix_modify d1 demflag 0
-#timestep 600
-
+timestep 6000
+#without this last step, there is feed of substrate from the bottom. This now looks better
 #from biofilm_het
 #run 80000
 
